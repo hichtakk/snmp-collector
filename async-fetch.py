@@ -13,19 +13,19 @@ from pysnmp.hlapi.asyncio import (SnmpEngine, getCmd, CommunityData,
                                   ObjectIdentity)
 
 
-CON_LIMIT = 1
+CON_LIMIT = 3
+sem = asyncio.Semaphore(CON_LIMIT)
 
 
 class SnmpException(Exception):
     pass
 
 
-@asyncio.coroutine
-def run(host, ois, community="public", port=161):
+async def run(host, ois, community="public", port=161):
     snmpEngine = SnmpEngine()
     result = []
-    with (yield from asyncio.Semaphore(CON_LIMIT)):
-        errorIndication, errorStatus, errorIndex, varBinds = yield from getCmd(
+    with (await sem):
+        errorIndication, errorStatus, errorIndex, varBinds = await getCmd(
             snmpEngine,
             CommunityData(community, mpModel=1),
             UdpTransportTarget((host, port)),
@@ -44,8 +44,8 @@ def run(host, ois, community="public", port=161):
             for varBind in varBinds:
                 [oid, value] = [x for x in varBind]
                 result.append({"host": host, "oid": str(oid), "type": value.__class__.__name__, "value": str(value) if value else None})
-    snmpEngine.transportDispatcher.closeDispatcher()
-    return result
+        snmpEngine.transportDispatcher.closeDispatcher()
+        return result
 
 
 def main():
@@ -59,8 +59,8 @@ def main():
         task = run(host["address"], target_oid, community=community)
         tasks.append(task)
     results = loop.run_until_complete(asyncio.wait(tasks))
-    for i in results[0]:
-        for a in i.result():
+    for result in results[0]:
+        for a in result.result():
             print(a)
 
 if __name__ == '__main__':
