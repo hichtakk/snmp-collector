@@ -10,7 +10,6 @@ from pysnmp.hlapi.asyncio import (SnmpEngine, getCmd, CommunityData,
 
 
 CONCURRENT_REQUEST_LIMIT = 5
-sem = asyncio.Semaphore(CONCURRENT_REQUEST_LIMIT)
 
 
 class SNMPCollector(object):
