@@ -23,7 +23,7 @@ setup(
     version=version,
     description='SNMP asyncronous collector',
     long_description=long_description,
-    url='https://github.com/hichtakk/snmp-collector',
+    url='https://github.com/hichtakk/toami',
     author='hichtakk',
     author_email='hichtakk@gmail.com',
     license='apache',
