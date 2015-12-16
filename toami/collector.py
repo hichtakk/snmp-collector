@@ -3,6 +3,7 @@ asyncronouse SNMP collector.
 """
 
 import asyncio
+import time
 
 from pysnmp.hlapi.asyncio import (SnmpEngine, getCmd, CommunityData,
                                   UdpTransportTarget, ContextData, ObjectType,
@@ -43,7 +44,8 @@ class SNMPCollector(object):
                     [oid, value] = [x for x in varBind]
                     result.append({"host": host, "oid": str(oid),
                                    "type": value.__class__.__name__,
-                                   "value": str(value) if value else None})
+                                   "value": str(value) if value else None,
+                                   "time": int(time.time())})
         snmpEngine.transportDispatcher.closeDispatcher()
         return result
 
