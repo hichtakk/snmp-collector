@@ -1,9 +1,17 @@
 from setuptools import setup
 from codecs import open
-from os import path
+import os
+import re
 
-here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+version = ''
+with open('toami/__init__.py', 'r') as fd:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                        fd.read(), re.MULTILINE).group(1)
+if not version:
+    raise RuntimeError('Cannot find version information')
+
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 requires = []
@@ -12,7 +20,7 @@ def _load_requires(path):
     
 setup(
     name='Toami',
-    version='0.1',
+    version=version,
     description='SNMP asyncronous collector',
     long_description=long_description,
     url='https://github.com/hichtakk/snmp-collector',
