@@ -1,15 +1,20 @@
-from distutils.core import setup
+from setuptools import setup
+from codecs import open
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 requires = []
 def _load_requires(path):
-    print([pkg.rstrip('\r\n') for pkg in open(path).readlines()])
     return requires + [pkg.rstrip('\r\n') for pkg in open(path).readlines()]
     
 setup(
-    name='SNMPCollector',
+    name='Toami',
     version='0.1',
     description='SNMP asyncronous collector',
-    long_description='SNMP asyncronous collector',
+    long_description=long_description,
     url='https://github.com/hichtakk/snmp-collector',
     author='hichtakk',
     author_email='hichtakk@gmail.com',
