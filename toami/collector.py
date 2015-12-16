@@ -13,31 +13,6 @@ CONCURRENT_REQUEST_LIMIT = 5
 sem = asyncio.Semaphore(CONCURRENT_REQUEST_LIMIT)
 
 
-class SnmpException(Exception):
-    pass
-
-
-class SNMPCommand(object):
-
-    def __init__(self):
-        pass
-
-    def get(self):
-        pass
-
-    def set(self):
-        pass
-
-    def walk(self):
-        pass
-
-    def bulkget(self):
-        pass
-
-    def bulkwalk(self):
-        pass
-
-
 class SNMPCollector(object):
 
     def __init__(self, config, semaphore=CONCURRENT_REQUEST_LIMIT):
@@ -84,20 +59,5 @@ class SNMPCollector(object):
         return result[0]
 
 
-def main():
-    import json
-    import logging
-    fd = open('./target.json')
-    config = json.loads(fd.read())
-    collector = SNMPCollector(config)
-    results = collector.run()
-
-    for task_result in results:
-        print(type(task_result))
-        for result in task_result.result():
-            print(result)
-
-    
 if __name__ == '__main__':
-    main()
-
+    pass
