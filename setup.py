@@ -35,7 +35,9 @@ setup(
     ],
     keywords='network snmp',
     install_requires=_load_requires('requirements.txt'),
+    packages=['toami'],
     package_data={
         'sample': ['config.json.sample']
-    }
+    },
+    scripts=['bin/toami']
 )
